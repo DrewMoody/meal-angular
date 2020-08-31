@@ -1,0 +1,30 @@
+$item-pad: 8px;
+
+:host {
+  display: flex;
+  background: #ffffff;
+  flex: 0 0 40px;
+  align-items: center;
+
+  &:not(.vertical-nav) {
+    justify-content: space-around;
+
+    .navigation-item:first-of-type {
+      padding-left: $item-pad;
+    }
+
+    .navigation-item:last-of-type {
+      padding-right: $item-pad;
+    }
+  }
+
+  &.vertical-nav {
+    padding-top: 16px;
+    flex-direction: column;
+    box-shadow: 0px 0px 2px 1px #0000000d;
+
+    .navigation-item {
+      padding: 16px 8px;
+    }
+  }
+}

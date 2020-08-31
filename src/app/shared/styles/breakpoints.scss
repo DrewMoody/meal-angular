@@ -1,0 +1,28 @@
+/**
+* Mobile is used for mobileOnly and is a max-width prop
+* everything else is min-width, so add 1 to the JS breakpoint for the << breakpoint
+*/
+$mobile: 480px;
+$minTablet: 481px;
+$minLaptop: 769px;
+$minDesktop: 1025px;
+
+@mixin minBreakpoint($point) {
+  @if $point == desktop {
+    @media (min-width: $minDesktop) {
+      @content;
+    }
+  } @else if $point == laptop {
+    @media (min-width: $minLaptop) {
+      @content;
+    }
+  } @else if $point == tablet {
+    @media (min-width: $minTablet) {
+      @content;
+    }
+  } @else if $point == mobileonly {
+    @media (max-width: $mobile) {
+      @content;
+    }
+  }
+}

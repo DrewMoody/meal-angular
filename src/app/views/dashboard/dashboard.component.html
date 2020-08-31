@@ -1,1 +1,27 @@
-<p>dashboard works!</p>
+<!-- TODO: Refactor meal$ and day$ into a dashState observable, use instead of nesting -->
+<ng-container *ngIf="dashState$ | async as dashState">
+  <mpa-dash-header
+    [moment]="dashState.moment"
+    [mealDay]="dashState.meals"
+  ></mpa-dash-header>
+  <div class="dashboard-header">
+    <div class="date-container">
+      <mat-icon class="no-select" (click)="onChevronLeftClick()"
+        >chevron_left</mat-icon
+      >
+      <h3 class="no-margin">{{ dashState.relativeTime }}</h3>
+      <mat-icon class="no-select" (click)="onChevronRightClick()"
+        >chevron_right</mat-icon
+      >
+    </div>
+  </div>
+  <div class="meals-container">
+    <mpa-meal-widget
+      *ngFor="
+        let entry of dashState.meals.meals | keyvalue: keepKeyValueOriginalOrder
+      "
+      [meal]="entry.value"
+      [mealName]="entry.key"
+    ></mpa-meal-widget>
+  </div>
+</ng-container>

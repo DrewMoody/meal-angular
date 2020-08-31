@@ -3,13 +3,18 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MealWidgetModule } from 'src/app/components/meal-widget/meal-widget.module';
+import { DashHeaderComponent } from './dash-header/dash-header.component';
+import { ProgressRingComponent } from './progress-ring/progress-ring.component';
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent, DashHeaderComponent, ProgressRingComponent],
   imports: [
     CommonModule,
-    DashboardRoutingModule
-  ]
+    DashboardRoutingModule,
+    MatIconModule,
+    MealWidgetModule,
+  ],
 })
-export class DashboardModule { }
+export class DashboardModule {}

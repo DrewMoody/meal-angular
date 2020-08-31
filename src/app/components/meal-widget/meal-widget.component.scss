@@ -1,0 +1,108 @@
+@use '../../shared/styles/variables';
+
+$side-pad: 12px;
+$macro-indicator-size: 16px;
+
+:host {
+  display: block;
+  background: #ffffff;
+  border-radius: 4px;
+  margin: 8px;
+
+  .mat-expansion-panel-header {
+    display: unset;
+    padding: unset;
+    height: unset;
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+  }
+
+  .panel-header-wrapper {
+    width: 100%;
+  }
+}
+
+.meal-widget-top,
+.meal-widget-bottom {
+  display: flex;
+  justify-content: space-between;
+
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.meal-widget-top {
+  align-items: center;
+  padding: 8px 0 4px;
+
+  .meal-top-left {
+    display: flex;
+    align-items: center;
+    padding-left: calc(#{$side-pad} - 8px);
+  }
+
+  .meal-top-right {
+    padding-right: $side-pad;
+  }
+
+  .meal-calories span {
+    margin-left: 2px;
+    font-size: 12px;
+    color: #757575;
+  }
+}
+
+.meal-widget-bottom {
+  padding-bottom: 8px;
+
+  .meal-bottom-left {
+    display: flex;
+    align-items: center;
+    padding-left: $side-pad;
+    flex: 1;
+
+    .macro-label {
+      display: flex;
+      align-items: center;
+      flex: 0 1 48px;
+
+      .macro-color {
+        height: $macro-indicator-size;
+        width: $macro-indicator-size;
+        font-size: $macro-indicator-size;
+        align-self: center;
+
+        &.macro-fat {
+          color: variables.$fat-color;
+        }
+
+        &.macro-carbs {
+          color: variables.$carbs-color;
+        }
+
+        &.macro-protein {
+          color: variables.$protein-color;
+        }
+      }
+
+      p {
+        margin-left: 2px;
+        font-size: 12px;
+        color: #757575;
+        letter-spacing: 0.2px;
+      }
+    }
+  }
+
+  .meal-bottom-right {
+    display: flex;
+    padding-right: calc(#{$side-pad} - 4px);
+  }
+}

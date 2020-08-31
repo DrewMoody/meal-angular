@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.full-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.center-content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .center-content-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    // margin-bottom: 4px;
+
+    // &.no-label {
+    //   margin-bottom: 0;
+    // }
+
+    .percent-p {
+      margin: 0;
+      font-weight: bold;
+      font-size: 16px;
+      color: #212121;
+    }
+
+    .label-p {
+      margin: 0;
+      font-size: 12px;
+      color: #828282;
+      line-height: 1.2;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<svg [style.height]="radius * 2" [style.width]="radius * 2">
+  <circle
+    [style.stroke]="strokeColor"
+    [style.stroke-dasharray]="circumference + ' ' + circumference"
+    [style.stroke-dashoffset]="_progress"
+    [style.stroke-width]="stroke"
+    fill="transparent"
+    [style.r]="normalizedRadius"
+    [style.cx]="radius"
+    [style.cy]="radius"
+  />
+</svg>
+<svg class="full-circle" [style.height]="radius * 2" [style.width]="radius * 2">
+  <circle
+    stroke="#4a4a4a33"
+    [style.stroke-width]="stroke"
+    fill="transparent"
+    [style.r]="normalizedRadius"
+    [style.cx]="radius"
+    [style.cy]="radius"
+  />
+</svg>
+<div
+  class="center-content-wrapper"
+  [style.height.px]="radius * 2"
+  [style.width.px]="radius * 2"
+>
+  <div class="center-content-container" [ngClass]="{ 'no-label': !label }">
+    <p class="percent-p">{{ progress }}%</p>
+    <p class="label-p">{{ label }}</p>
+  </div>
+</div>

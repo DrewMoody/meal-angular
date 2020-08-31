@@ -1,0 +1,45 @@
+@use "../../shared/styles/breakpoints" as brk;
+
+:host {
+  display: block;
+}
+
+.dashboard-header {
+  width: 100%;
+  background: #ffffff;
+}
+
+.date-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  max-width: 360px;
+  margin: 0 auto;
+
+  @include brk.minBreakpoint(tablet) {
+    max-width: 400px;
+  }
+
+  .mat-icon {
+    font-size: 28px;
+    height: 28px;
+    width: 28px;
+    cursor: pointer;
+
+    @include brk.minBreakpoint(tablet) {
+      font-size: 32px;
+      height: 32px;
+      width: 32px;
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    margin: 0;
+
+    @include brk.minBreakpoint(tablet) {
+      font-size: 21px;
+    }
+  }
+}

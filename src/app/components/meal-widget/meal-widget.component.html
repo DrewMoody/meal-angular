@@ -1,0 +1,55 @@
+<mat-expansion-panel
+  hideToggle
+  (opened)="onPanelOpen()"
+  (closed)="onPanelClose()"
+>
+  <mat-expansion-panel-header>
+    <div class="panel-header-wrapper">
+      <div class="meal-widget-top">
+        <div class="meal-top-left">
+          <!--<mat-icon *ngIf="!!expanded">expand_more</mat-icon>-->
+          <mat-icon
+            [@chevronOpenClose]="!!expanded ? 'open' : 'closed'"
+            [class.panel-open]="!!expanded"
+            >chevron_right</mat-icon
+          >
+          <h3>{{ mealName | titlecase }}</h3>
+        </div>
+        <p class="meal-top-right meal-calories mat-subheading-2">
+          {{ meal.calorieInformation.calories }}<span>kcal</span>
+        </p>
+      </div>
+      <div class="meal-widget-bottom">
+        <div class="meal-bottom-left">
+          <div class="macro-label">
+            <mat-icon class="macro-color macro-fat">lens</mat-icon>
+            <p>{{ meal.calorieInformation.fat }}g</p>
+          </div>
+          <div class="macro-label">
+            <mat-icon class="macro-color macro-carbs">lens</mat-icon>
+            <p>{{ meal.calorieInformation.carbs }}g</p>
+          </div>
+          <div class="macro-label">
+            <mat-icon class="macro-color macro-protein">lens</mat-icon>
+            <p>{{ meal.calorieInformation.protein }}g</p>
+          </div>
+        </div>
+        <div class="meal-bottom-right">
+          <mat-icon
+            (click)="onEditClick($event)"
+            class="create-icon"
+            *ngIf="meal.foodItems.length > 0"
+            >create</mat-icon
+          >
+          <mat-icon
+            (click)="onAddClick($event)"
+            class="add-circle-icon"
+            *ngIf="meal.foodItems.length <= 0"
+            >add_circle</mat-icon
+          >
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel-header>
+  <p>This is the primary content of the panel.</p>
+</mat-expansion-panel>

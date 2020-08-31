@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  background: #ffffff;
+  overflow: auto;
+}
+
+.date-header {
+  -webkit-font-smoothing: antialiased;
+  color: #424242;
+  margin: 16px 16px 0;
+}
+
+.dash-header-main {
+  display: flex;
+  justify-content: center;
+
+  .calorie-count {
+    font-size: 72px;
+    align-self: flex-end;
+    margin: 0 16px 8px 0;
+    -webkit-font-smoothing: antialiased;
+    color: #212121;
+
+    span {
+      font-size: 32px;
+    }
+  }
+}
