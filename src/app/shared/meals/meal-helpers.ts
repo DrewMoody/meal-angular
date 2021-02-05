@@ -68,3 +68,24 @@ export function calculateMealItem(meal: MealItem): MealItem {
     }, generateCalorieInformation()),
   };
 }
+
+/**
+ * Takes a meal day and calculates its calorie information
+ * Used prior to adding or editing setting a meal to state
+ */
+export function calculateMealDay(mealDay: MealDay): MealDay {
+  return {
+    ...mealDay,
+    calorieInformation: Object.values(mealDay.meals).reduce((acc, curr) => {
+      const { calorieInformation: currCals } = curr;
+      return {
+        servingSize: '',
+        calories: acc.calories + currCals.calories,
+        fat: acc.fat + currCals.fat,
+        carbs: acc.carbs + currCals.carbs,
+        netCarbs: acc.netCarbs + currCals.netCarbs,
+        protein: acc.protein + currCals.protein,
+      };
+    }, generateCalorieInformation()),
+  };
+}

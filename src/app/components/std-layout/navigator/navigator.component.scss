@@ -27,4 +27,12 @@ $item-pad: 8px;
       padding: 16px 8px;
     }
   }
+
+  .navigation-item mat-icon {
+    cursor: pointer;
+  }
+
+  .navigation-item.active {
+    color: #4b987f;
+  }
 }

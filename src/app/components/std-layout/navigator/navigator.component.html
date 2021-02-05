@@ -1,3 +1,3 @@
-<div class="navigation-item" *ngFor="let item of navItems">
-  <mat-icon [ngClass]="item.icon + '-icon'">{{ item.icon }}</mat-icon>
+<div *ngFor="let item of navItems$ | async" [ngClass]="{ 'navigation-item': true, active: item.active }">
+  <mat-icon [ngClass]="item.icon + '-icon'" (click)='item.onClick(item.route)'>{{ item.icon }}</mat-icon>
 </div>

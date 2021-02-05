@@ -18,14 +18,9 @@ import { LongFormDate } from '../../../shared/time/time-types';
 export class DashHeaderComponent implements OnInit {
   @Input() mealDay: MealDay;
   @Input() longFormDate: LongFormDate;
-  test: Observable<number>;
+  goalCals: number = 1800;
 
-  constructor() {
-    this.test = timer(0, 2000).pipe(
-      map((x) => x * 10),
-      takeWhile((x) => x <= 100)
-    );
-  }
+  constructor() {}
 
   ngOnInit(): void {}
 }

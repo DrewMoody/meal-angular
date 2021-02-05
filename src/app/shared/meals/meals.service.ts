@@ -10,7 +10,7 @@ import {
   MealsServiceReducer,
 } from './meals-service-types';
 import { StoreSubject } from '../store';
-import { calculateMealItem, generateMealDay } from './meal-helpers';
+import { calculateMealDay, calculateMealItem, generateMealDay } from './meal-helpers';
 
 const MEALS_ID = 'meals';
 
@@ -75,6 +75,7 @@ export class MealsService extends StoreSubject<MealsState, Action> {
 
   /**
    * TODO: reducer should NOT be managing the save action
+   * It should be done in TAP on the source. Add ability to run side effects to base class
    */
   private mealsByDay: MealsServiceReducer<'mealsByDay'> = (state, action) => {
     let updatedMeals: { [x: string]: MealDay };
@@ -86,16 +87,16 @@ export class MealsService extends StoreSubject<MealsState, Action> {
         };
         break;
       case Actions.SetMealItem:
+        // when adjusting item on a meal day, need to adjust calorieInformation
         const mealDay: MealDay = state[action.day] || generateMealDay();
+        const meals = {
+          ...mealDay.meals,
+          [action.entry]: calculateMealItem(action.meal)
+        };
+        calculateMealDay(mealDay)
         updatedMeals = {
           ...state,
-          [action.day]: {
-            ...mealDay,
-            meals: {
-              ...mealDay.meals,
-              [action.entry]: calculateMealItem(action.meal),
-            },
-          },
+          [action.day]: calculateMealDay({ ...mealDay, meals })
         };
         break;
       default:

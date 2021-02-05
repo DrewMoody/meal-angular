@@ -26,7 +26,7 @@
   [style.width.px]="radius * 2"
 >
   <div class="center-content-container" [ngClass]="{ 'no-label': !label }">
-    <p class="percent-p">{{ progress }}%</p>
+    <p class="percent-p">{{ progress | number:'0.0-2' }}%</p>
     <p class="label-p">{{ label }}</p>
   </div>
 </div>

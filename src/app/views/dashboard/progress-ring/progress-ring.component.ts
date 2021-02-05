@@ -46,6 +46,6 @@ export class ProgressRingComponent implements OnInit, OnChanges {
 
   setProgress(): void {
     this._progress =
-      this.circumference - (this.progress / 100) * this.circumference;
+      Number((this.circumference - (this.progress / 100) * this.circumference).toFixed(1));
   }
 }
