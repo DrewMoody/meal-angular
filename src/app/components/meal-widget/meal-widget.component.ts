@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
-import { MealItem } from '../../shared/meal-types';
+import { MealItem } from '../../shared/meals/meal-types';
 import {
   trigger,
   state,

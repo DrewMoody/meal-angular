@@ -1,6 +1,12 @@
 :host {
   display: block;
   position: relative;
+  // component size is larger than
+  margin: -10px;
+}
+
+svg {
+  display: block;
 }
 
 circle {
@@ -28,11 +34,6 @@ circle {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    // margin-bottom: 4px;
-
-    // &.no-label {
-    //   margin-bottom: 0;
-    // }
 
     .percent-p {
       margin: 0;

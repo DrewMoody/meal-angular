@@ -51,5 +51,26 @@
       </div>
     </div>
   </mat-expansion-panel-header>
-  <p>This is the primary content of the panel.</p>
+  <div class="meal-item" *ngFor="let item of meal.foodItems">
+    <div class="meal-item-left">
+      <p>{{ item.name }}</p>
+      <div class="item-nutrition">
+        <div class="macro-label">
+          <mat-icon class="macro-color macro-fat">lens</mat-icon>
+          <p>{{ item.calorieInformation.fat }}g</p>
+        </div>
+        <div class="macro-label">
+          <mat-icon class="macro-color macro-carbs">lens</mat-icon>
+          <p>{{ item.calorieInformation.carbs }}g</p>
+        </div>
+        <div class="macro-label">
+          <mat-icon class="macro-color macro-protein">lens</mat-icon>
+          <p>{{ item.calorieInformation.protein }}g</p>
+        </div>
+      </div>
+    </div>
+    <p class="item-calories">
+      {{ item.calorieInformation.calories }}<span>kcal</span>
+    </p>
+  </div>
 </mat-expansion-panel>

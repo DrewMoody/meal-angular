@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MealDay, MealItem, MealEntry } from './meal-types';
-import { TimeService } from './time.service';
+import { TimeService } from '../time/time.service';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import {
@@ -9,7 +9,7 @@ import {
   MealsServiceAction as Action,
   MealsServiceReducer,
 } from './meals-service-types';
-import { StoreSubject } from './store';
+import { StoreSubject } from '../store';
 import { calculateMealItem, generateMealDay } from './meal-helpers';
 
 const MEALS_ID = 'meals';
@@ -55,7 +55,6 @@ export class MealsService extends StoreSubject<MealsState, Action> {
    */
 
   setMealsForDay(day: string, meals: MealDay): void {
-    console.log(meals);
     this.dispatch({ type: Actions.SetMealDay, day, meals });
   }
 

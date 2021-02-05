@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { LongFormDate } from './time-types';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,11 @@ export class TimeService {
       sameElse: 'L',
     });
   }
+
+  getLongFormDate = (date: moment.Moment): LongFormDate => ({
+    day: date.format('dddd'),
+    date: date.format('MMMM Do'),
+  });
 
   formatMomentUTC(date: moment.Moment): string {
     return date.format('YYYY-MM-DD');

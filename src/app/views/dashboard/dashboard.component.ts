@@ -5,9 +5,9 @@ import {
   ChangeDetectionStrategy,
   NgZone,
 } from '@angular/core';
-import { MealsService } from '../../shared/meals.service';
-import { TimeService } from 'src/app/shared/time.service';
-import { MealDay, MealEntry } from 'src/app/shared/meal-types';
+import { MealsService } from '../../shared/meals/meals.service';
+import { TimeService } from 'src/app/shared/time/time.service';
+import { MealDay, MealEntry } from 'src/app/shared/meals/meal-types';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import {
   scan,
@@ -21,14 +21,9 @@ import {
   generateMealDay,
   generateFoodItem,
   generateCalorieInformation,
-} from '../../shared/meal-helpers';
+} from '../../shared/meals/meal-helpers';
 import { KeyValue } from '@angular/common';
-
-interface DashState {
-  moment: moment.Moment;
-  relativeTime: string;
-  meals: MealDay;
-}
+import { DashTime, DashState } from './shared/models';
 
 @Component({
   selector: 'mpa-dashboard',
@@ -38,7 +33,7 @@ interface DashState {
 })
 export class DashboardComponent implements OnInit {
   day: BehaviorSubject<'previous' | 'none' | 'next'>;
-  day$: Observable<{ moment: moment.Moment; relativeTime: string }>;
+  day$: Observable<DashTime>;
   dashState$: Observable<DashState>;
 
   constructor(
@@ -67,6 +62,7 @@ export class DashboardComponent implements OnInit {
       map((moment) => ({
         moment,
         relativeTime: this.timeService.getRelativeFormattedTime(moment),
+        longFormDate: this.timeService.getLongFormDate(moment),
       })),
       shareReplay(1)
     );
@@ -94,7 +90,10 @@ export class DashboardComponent implements OnInit {
           ...genMeal.meals,
           [MealEntry.Breakfast]: {
             id: 'Test',
-            foodItems: [generateFoodItem('green beans')],
+            foodItems: [
+              generateFoodItem('green beans'),
+              generateFoodItem('red beans'),
+            ],
             calorieInformation: generateCalorieInformation(),
           },
         },
@@ -110,7 +109,7 @@ export class DashboardComponent implements OnInit {
       MealEntry.Breakfast,
       {
         id: 'Breakfast',
-        foodItems: [test],
+        foodItems: [test, test, test],
         calorieInformation: generateCalorieInformation(),
       }
     );

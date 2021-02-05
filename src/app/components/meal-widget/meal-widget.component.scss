@@ -2,6 +2,7 @@
 
 $side-pad: 12px;
 $macro-indicator-size: 16px;
+$mini-macro-indicator-size: 10px;
 
 :host {
   display: block;
@@ -38,6 +39,15 @@ $macro-indicator-size: 16px;
   }
 }
 
+.meal-calories,
+.item-calories {
+  span {
+    margin-left: 2px;
+    font-size: 12px;
+    color: #757575;
+  }
+}
+
 .meal-widget-top {
   align-items: center;
   padding: 8px 0 4px;
@@ -50,12 +60,6 @@ $macro-indicator-size: 16px;
 
   .meal-top-right {
     padding-right: $side-pad;
-  }
-
-  .meal-calories span {
-    margin-left: 2px;
-    font-size: 12px;
-    color: #757575;
   }
 }
 
@@ -104,5 +108,57 @@ $macro-indicator-size: 16px;
   .meal-bottom-right {
     display: flex;
     padding-right: calc(#{$side-pad} - 4px);
+  }
+}
+
+.meal-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 12px;
+  font-size: 16px;
+  align-items: center;
+
+  .meal-item-left > p {
+    margin-bottom: 2px;
+  }
+
+  .item-nutrition {
+    display: flex;
+    align-items: center;
+  }
+
+  .macro-label {
+    display: flex;
+    align-items: center;
+
+    &:not(:last-of-type) {
+      margin-right: 8px;
+    }
+
+    .macro-color {
+      height: $mini-macro-indicator-size;
+      width: $mini-macro-indicator-size;
+      font-size: $mini-macro-indicator-size;
+      align-self: center;
+
+      &.macro-fat {
+        color: variables.$fat-color;
+      }
+
+      &.macro-carbs {
+        color: variables.$carbs-color;
+      }
+
+      &.macro-protein {
+        color: variables.$protein-color;
+      }
+    }
+
+    p {
+      margin-left: 2px;
+      font-size: 12px;
+      color: #757575;
+      letter-spacing: 0.2px;
+    }
   }
 }

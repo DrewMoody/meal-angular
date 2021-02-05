@@ -1,7 +1,7 @@
 <!-- TODO: Refactor meal$ and day$ into a dashState observable, use instead of nesting -->
 <ng-container *ngIf="dashState$ | async as dashState">
   <mpa-dash-header
-    [moment]="dashState.moment"
+    [longFormDate]="dashState.longFormDate"
     [mealDay]="dashState.meals"
   ></mpa-dash-header>
   <div class="dashboard-header">

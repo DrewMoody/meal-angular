@@ -1,12 +1,13 @@
 <h3 class="date-header">
-  <strong>{{ formattedDate.day }}</strong
-  >, {{ formattedDate.date }}
+  <strong>{{ longFormDate.day }}</strong
+  >, {{ longFormDate.date }}
 </h3>
 <div class="dash-header-main">
   <p class="calorie-count">
     {{ mealDay.calorieInformation.calories }}<span>kcal</span>
   </p>
   <mpa-progress-ring
+    strokeColor="#4cd862"
     [progress]="test | async"
     label="Daily intake"
   ></mpa-progress-ring>

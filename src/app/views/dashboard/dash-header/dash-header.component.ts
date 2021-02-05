@@ -4,9 +4,10 @@ import {
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
-import { MealDay } from 'src/app/shared/meal-types';
+import { MealDay } from 'src/app/shared/meals/meal-types';
 import { timer, Observable } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
+import { LongFormDate } from '../../../shared/time/time-types';
 
 @Component({
   selector: 'mpa-dash-header',
@@ -16,16 +17,7 @@ import { map, takeWhile } from 'rxjs/operators';
 })
 export class DashHeaderComponent implements OnInit {
   @Input() mealDay: MealDay;
-  @Input() set moment(moment: moment.Moment) {
-    this.formattedDate = {
-      day: moment.format('dddd'),
-      date: moment.format('MMMM Do'),
-    };
-  }
-  formattedDate: {
-    day: string;
-    date: string;
-  };
+  @Input() longFormDate: LongFormDate;
   test: Observable<number>;
 
   constructor() {
