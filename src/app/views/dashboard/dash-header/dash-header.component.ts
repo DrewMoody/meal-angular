@@ -4,10 +4,8 @@ import {
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
-import { MealDay } from 'src/app/shared/meals/meal-types';
-import { timer, Observable } from 'rxjs';
-import { map, takeWhile } from 'rxjs/operators';
-import { LongFormDate } from '../../../shared/time/time-types';
+import { MealDay } from 'src/app/shared/models/meal';
+import { LongFormDate } from '../../../shared/models/time';
 
 @Component({
   selector: 'mpa-dash-header',

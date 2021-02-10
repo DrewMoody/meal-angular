@@ -4,7 +4,7 @@ import {
   MealItem,
   MealDay,
   MealEntry,
-} from './meal-types';
+} from '../models/meal';
 import { v4 } from 'uuid';
 
 export function generateCalorieInformation(): CalorieInformation {
@@ -53,6 +53,7 @@ export function generateMealDay(): MealDay {
  * Used prior to adding or editing setting a meal to state
  */
 export function calculateMealItem(meal: MealItem): MealItem {
+  console.log(meal);
   return {
     ...meal,
     calorieInformation: meal.foodItems.reduce((acc, curr) => {

@@ -1,12 +1,53 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { LongFormDate } from './time-types';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { scan, shareReplay, tap } from 'rxjs/operators';
+import { LongFormDate } from '../models/time';
+import { TimeAction, TimeActions } from './time-service-models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimeService {
+  private _currentDay: moment.Moment;
+  private readonly currentDay: BehaviorSubject<TimeAction> = new BehaviorSubject(
+    { type: TimeActions.SetTime, time: moment() }
+  );
+  private readonly currentDay$: Observable<moment.Moment> = this.currentDay.pipe(
+    scan((acc, curr) => this.reducer(acc, curr), moment()),
+    tap((currentDay) => (this._currentDay = currentDay)),
+    shareReplay(1)
+  );
+
   constructor() {}
+
+  /** escape hatch. TODO: should take different approach here */
+  getCurrentDay() {
+    return this._currentDay;
+  }
+
+  getCurrentDay$() {
+    return this.currentDay$;
+  }
+
+  setCurrentDay(time: moment.Moment) {
+    this.currentDay.next({ type: TimeActions.SetTime, time });
+  }
+
+  adjustCurrentDay(daysFromCurrentDay: number) {
+    this.currentDay.next({ type: TimeActions.AdjustTime, daysFromCurrentDay });
+  }
+
+  reducer(state: moment.Moment, action: TimeAction) {
+    switch (action.type) {
+      case TimeActions.SetTime:
+        return action.time;
+      case TimeActions.AdjustTime:
+        return state.add(action.daysFromCurrentDay, 'days');
+      default:
+        return state;
+    }
+  }
 
   getDay(daysFromToday: number = 0): moment.Moment {
     return moment().add(daysFromToday, 'days');
@@ -29,7 +70,7 @@ export class TimeService {
   });
 
   formatMomentUTC(date: moment.Moment): string {
-    return date.format('YYYY-MM-DD');
+    return date.format('MM/DD/YYYY');
   }
 
   getMomentFromFormattedUTCDate(date: string): moment.Moment {
@@ -41,9 +82,9 @@ export class TimeService {
     date: string
   ): { year: number; month: number; day: number } {
     return {
-      year: Number(date.slice(0, 4)),
-      month: Number(date.slice(5, 7)),
-      day: Number(date.slice(8)),
+      year: Number(date.slice(6)),
+      month: Number(date.slice(0, 2)),
+      day: Number(date.slice(3, 5)),
     };
   }
 }

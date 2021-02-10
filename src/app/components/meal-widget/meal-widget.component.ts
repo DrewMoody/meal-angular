@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
-import { MealItem } from '../../shared/meals/meal-types';
+import { MealEntry, MealItem } from '../../shared/models/meal';
 import {
   trigger,
   state,
@@ -12,6 +12,14 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddFoodComponent } from '../add-food/add-food.component';
+import {
+  AddFoodData,
+  AddFoodResult,
+} from 'src/app/shared/models/add-food-dialog';
+import { MealsService } from 'src/app/shared/meals/meals.service';
+import { TimeService } from 'src/app/shared/time/time.service';
 @Component({
   selector: 'mpa-meal-widget',
   templateUrl: './meal-widget.component.html',
@@ -41,10 +49,14 @@ import {
 })
 export class MealWidgetComponent implements OnInit {
   @Input() meal: MealItem;
-  @Input() mealName: string;
+  @Input() mealName: MealEntry;
   expanded: boolean = false;
 
-  constructor() {}
+  constructor(
+    private dialogService: MatDialog,
+    private mealService: MealsService,
+    private timeService: TimeService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -56,8 +68,32 @@ export class MealWidgetComponent implements OnInit {
     this.expanded = false;
   }
 
-  onAddClick(e: Event): void {
+  async onAddClick(e: Event): Promise<void> {
     e.stopPropagation();
+    const date = this.timeService.getCurrentDay();
+
+    const addDialog: MatDialogRef<
+      AddFoodComponent,
+      AddFoodResult
+    > = this.dialogService.open<AddFoodComponent, AddFoodData, AddFoodResult>(
+      AddFoodComponent,
+      {
+        data: {
+          date,
+          meal: this.mealName,
+        },
+      }
+    );
+
+    addDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.mealService.setFoodItem(
+          this.timeService.formatMomentUTC(result.date),
+          result.meal,
+          result.food
+        );
+      }
+    });
   }
 
   onEditClick(e: Event): void {

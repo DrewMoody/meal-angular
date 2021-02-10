@@ -5,8 +5,14 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  HostBinding,
 } from '@angular/core';
 
+/**
+ * TODO: When progress < 0 (when consumed more calories than alotted for day) colors are inverted
+ * from 100-199%, 300-399%, etc. Need different approach
+ * For now, just turn whole ring lightly red
+ */
 @Component({
   selector: 'mpa-progress-ring',
   templateUrl: './progress-ring.component.html',
@@ -22,6 +28,8 @@ export class ProgressRingComponent implements OnInit, OnChanges {
   normalizedRadius: number;
   circumference: number;
   _progress: number;
+  readonly backgroundFill: string = '#4a4a4a33';
+  readonly overFill: string = '#bb7576';
 
   constructor() {}
 
@@ -45,7 +53,11 @@ export class ProgressRingComponent implements OnInit, OnChanges {
   }
 
   setProgress(): void {
-    this._progress =
-      Number((this.circumference - (this.progress / 100) * this.circumference).toFixed(1));
+    this._progress = Number(
+      (this.circumference - (this.progress / 100) * this.circumference).toFixed(
+        1
+      )
+    );
+    console.log(this._progress);
   }
 }

@@ -9,6 +9,14 @@ import {
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { scan, startWith } from 'rxjs/operators';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddFoodComponent } from '../../add-food/add-food.component';
+import { MealsService } from 'src/app/shared/meals/meals.service';
+import {
+  AddFoodData,
+  AddFoodResult,
+} from 'src/app/shared/models/add-food-dialog';
+import { TimeService } from 'src/app/shared/time/time.service';
 
 export enum NavOrientation {
   Horizontal,
@@ -23,7 +31,12 @@ interface NavItem {
   onClick: (route?: string) => any;
 }
 
-const createNavItem = (text: string, icon: string, route: string, onClick: (route?: string) => any) => ({ text, icon, route, onClick })
+const createNavItem = (
+  text: string,
+  icon: string,
+  route: string,
+  onClick: (route?: string) => any
+) => ({ text, icon, route, onClick });
 
 @Component({
   selector: 'mpa-navigator',
@@ -39,20 +52,29 @@ export class NavigatorComponent implements OnDestroy {
   navItems$: Observable<NavItem[]>;
   routerSub: Subscription;
 
-  constructor(private router: Router, private cdRef: ChangeDetectorRef) {
+  constructor(
+    private router: Router,
+    private cdRef: ChangeDetectorRef,
+    private dialogService: MatDialog,
+    private mealService: MealsService,
+    private timeService: TimeService
+  ) {
     const routeFn = (route: string) => this.route(route);
     this.navItems$ = this.router.events.pipe(
       startWith(),
-      scan((acc, _) => {
-        return acc.map(x => ({ ...x, active: this.isActive(x.route) }));
-      }, [
-        createNavItem('dash', 'home', 'dashboard', routeFn),
-        createNavItem('stats', 'bar_chart', 'stats', routeFn),
-        createNavItem('add', 'add_circle', 'add', () => this.onAdd()),
-        createNavItem('recipes', 'restaurant_menu', 'recipes', routeFn),
-        createNavItem('groceries', 'shopping_cart', 'groceries', routeFn),
-      ])
-    )
+      scan(
+        (acc, _) => {
+          return acc.map((x) => ({ ...x, active: this.isActive(x.route) }));
+        },
+        [
+          createNavItem('dash', 'home', 'dashboard', routeFn),
+          createNavItem('stats', 'bar_chart', 'stats', routeFn),
+          createNavItem('add', 'add_circle', 'add', () => this.onAdd()),
+          createNavItem('recipes', 'restaurant_menu', 'recipes', routeFn),
+          createNavItem('groceries', 'shopping_cart', 'groceries', routeFn),
+        ]
+      )
+    );
   }
 
   ngOnDestroy() {
@@ -69,6 +91,21 @@ export class NavigatorComponent implements OnDestroy {
   }
 
   onAdd(): void {
-    console.log('Add');
+    const addDialog: MatDialogRef<
+      AddFoodComponent,
+      AddFoodResult
+    > = this.dialogService.open<AddFoodComponent, AddFoodData, AddFoodResult>(
+      AddFoodComponent
+    );
+
+    addDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.mealService.setFoodItem(
+          this.timeService.formatMomentUTC(result.date),
+          result.meal,
+          result.food
+        );
+      }
+    });
   }
 }

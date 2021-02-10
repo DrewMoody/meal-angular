@@ -48,9 +48,13 @@ export abstract class StoreSubject<S, A extends Action> {
                 x.reduce((acc, curr) => ({ ...acc, ...curr }), syncState) as S
             ),
             switchMap((initState) => initStoreVals(initState)),
+            tap(this.sideEffects),
             shareReplay(1)
           )
-        : initStoreVals(syncState as S).pipe(shareReplay(1));
+        : initStoreVals(syncState as S).pipe(
+            tap(this.sideEffects),
+            shareReplay(1)
+          );
   }
 
   dispatch(action: A, updateDefault = false): void {
@@ -80,6 +84,11 @@ export abstract class StoreSubject<S, A extends Action> {
    * should call initStore
    */
   abstract initialize(): void;
+
+  /**
+   * Called after the store updates, can be used to execute side effects
+   */
+  abstract sideEffects(state: S): void;
 
   protected abstract reducer(state: S, action: A): S;
 }

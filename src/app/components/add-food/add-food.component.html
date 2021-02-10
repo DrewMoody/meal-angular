@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Add food</h2>
+<mat-dialog-content class='mat-typography'>
+  <p>Day:</p>
+  <form *ngIf='foodForm' class='food-form' [formGroup]='foodForm'>
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="dp" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Meal</mat-label>
+      <mat-select name='meal' formControlName="meal">
+        <mat-option *ngFor="let meal of meals" [value]="meal.value">
+          {{meal.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Ex. Grandma's apple pie" formControlName="name">
+    </mat-form-field>
+    <ng-container *ngFor='let ingredient of getCalorieInformation(foodForm).controls | keyvalue: keepKeyValueOriginalOrder'>
+      <mat-form-field class="example-full-width">
+        <mat-label>{{ ingredient.key }}</mat-label>
+        <input matInput type='number' [formControl]="ingredient.value">
+      </mat-form-field>
+    </ng-container>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align='end'>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)='onAdd()' cdkFocusInitial>Add</button>
+</mat-dialog-actions>

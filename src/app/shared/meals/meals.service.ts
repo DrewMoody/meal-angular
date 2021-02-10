@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
-import { MealDay, MealItem, MealEntry } from './meal-types';
+import { MealDay, MealItem, MealEntry, FoodItem } from '../models/meal';
 import { TimeService } from '../time/time.service';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import {
   MealsState,
   MealsServiceActions as Actions,
   MealsServiceAction as Action,
   MealsServiceReducer,
-} from './meals-service-types';
+} from './meals-service-models';
 import { StoreSubject } from '../store';
-import { calculateMealDay, calculateMealItem, generateMealDay } from './meal-helpers';
+import {
+  calculateMealDay,
+  calculateMealItem,
+  generateMealDay,
+} from '../helpers/meal';
 
 const MEALS_ID = 'meals';
 
 const INIT_MEALS_STATE: MealsState = {
   mealsByDay: {},
 };
+
+/**
+ * Key for mealsByDay is string MM/DD/YYYY
+ */
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +39,7 @@ export class MealsService extends StoreSubject<MealsState, Action> {
     this.initStore({ ...INIT_MEALS_STATE, mealsByDay });
   }
 
+  // TODO: This doesn't seem to belong here...
   getDay(daysFromToday?: number): moment.Moment {
     return this.timeService.getDay(daysFromToday);
   }
@@ -46,7 +55,8 @@ export class MealsService extends StoreSubject<MealsState, Action> {
     return JSON.parse(localStorage.getItem(MEALS_ID)) || {};
   }
 
-  private saveMealsToStorage(meals: { [x: number]: MealDay }): void {
+  protected saveMealsToStorage(meals: { [x: number]: MealDay }): void {
+    console.log(meals);
     localStorage.setItem(MEALS_ID, JSON.stringify(meals));
   }
 
@@ -58,8 +68,12 @@ export class MealsService extends StoreSubject<MealsState, Action> {
     this.dispatch({ type: Actions.SetMealDay, day, meals });
   }
 
-  setMealItem(day, entry: MealEntry, meal: MealItem): void {
+  setMealItem(day: string, entry: MealEntry, meal: MealItem): void {
     this.dispatch({ type: Actions.SetMealItem, day, entry, meal });
+  }
+
+  setFoodItem(day: string, entry: MealEntry, food: FoodItem): void {
+    this.dispatch({ type: Actions.SetFoodItem, day, entry, food });
   }
 
   /**
@@ -73,12 +87,11 @@ export class MealsService extends StoreSubject<MealsState, Action> {
     };
   }
 
-  /**
-   * TODO: reducer should NOT be managing the save action
-   * It should be done in TAP on the source. Add ability to run side effects to base class
-   */
   private mealsByDay: MealsServiceReducer<'mealsByDay'> = (state, action) => {
+    const mealDay: MealDay = state[action.day] || generateMealDay();
+
     let updatedMeals: { [x: string]: MealDay };
+
     switch (action.type) {
       case Actions.SetMealDay:
         updatedMeals = {
@@ -87,16 +100,27 @@ export class MealsService extends StoreSubject<MealsState, Action> {
         };
         break;
       case Actions.SetMealItem:
-        // when adjusting item on a meal day, need to adjust calorieInformation
-        const mealDay: MealDay = state[action.day] || generateMealDay();
         const meals = {
           ...mealDay.meals,
-          [action.entry]: calculateMealItem(action.meal)
+          [action.entry]: calculateMealItem(action.meal),
         };
-        calculateMealDay(mealDay)
+        calculateMealDay(mealDay);
         updatedMeals = {
           ...state,
-          [action.day]: calculateMealDay({ ...mealDay, meals })
+          [action.day]: calculateMealDay({ ...mealDay, meals }),
+        };
+        break;
+      case Actions.SetFoodItem:
+        const entry: MealItem = calculateMealItem({
+          ...mealDay.meals[action.entry],
+          foodItems: [...mealDay.meals[action.entry].foodItems, action.food],
+        });
+        updatedMeals = {
+          ...state,
+          [action.day]: calculateMealDay({
+            ...mealDay,
+            meals: { ...mealDay.meals, [action.entry]: entry },
+          }),
         };
         break;
       default:
@@ -105,4 +129,11 @@ export class MealsService extends StoreSubject<MealsState, Action> {
     this.saveMealsToStorage(updatedMeals);
     return updatedMeals;
   };
+
+  /** TODO: Explore why tap is running before `this` is available? Seems to be RxJS bug. Temporarily reverting to running side effects on reducer */
+  sideEffects(state: MealsState) {
+    // if (this.saveMealsToStorage != undefined) {
+    //   this.saveMealsToStorage(state.mealsByDay);
+    // }
+  }
 }

@@ -1,6 +1,6 @@
 <svg [style.height]="radius * 2" [style.width]="radius * 2">
   <circle
-    [style.stroke]="strokeColor"
+    [style.stroke]="_progress < 0 ? overFill : strokeColor"
     [style.stroke-dasharray]="circumference + ' ' + circumference"
     [style.stroke-dashoffset]="_progress"
     [style.stroke-width]="stroke"
@@ -12,7 +12,7 @@
 </svg>
 <svg class="full-circle" [style.height]="radius * 2" [style.width]="radius * 2">
   <circle
-    stroke="#4a4a4a33"
+    [style.stroke]="_progress < 0 ? overFill : backgroundFill"
     [style.stroke-width]="stroke"
     fill="transparent"
     [style.r]="normalizedRadius"
@@ -26,7 +26,7 @@
   [style.width.px]="radius * 2"
 >
   <div class="center-content-container" [ngClass]="{ 'no-label': !label }">
-    <p class="percent-p">{{ progress | number:'0.0-2' }}%</p>
+    <p class="percent-p">{{ progress | number:'0.0-1' }}%</p>
     <p class="label-p">{{ label }}</p>
   </div>
 </div>

@@ -1,5 +1,5 @@
-import { LongFormDate } from '../../../shared/time/time-types';
-import { MealDay } from '../../../shared/meals/meal-types';
+import { LongFormDate } from '../../../shared/models/time';
+import { MealDay } from '../../../shared/models/meal';
 
 export interface DashTime {
   moment: moment.Moment;

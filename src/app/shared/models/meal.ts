@@ -7,12 +7,15 @@ export interface CalorieInformation {
   protein: number;
 }
 
-export interface FoodItem {
+export interface Ingredient {
   id: string;
   name: string;
-  ingredients: FoodItem[];
-  recipe: string[];
   calorieInformation: CalorieInformation;
+}
+
+export interface FoodItem extends Ingredient {
+  ingredients: Ingredient[];
+  recipe: string[];
 }
 
 export interface MealItem {

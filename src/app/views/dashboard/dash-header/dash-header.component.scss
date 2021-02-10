@@ -12,8 +12,11 @@
 
 .dash-header-main {
   display: flex;
-  justify-content: center;
   margin-bottom: 12px;
+  justify-content: space-between;
+  width: 320px;
+  max-width: 100%;
+  margin: auto;
 
   .calorie-count {
     font-size: 64px;

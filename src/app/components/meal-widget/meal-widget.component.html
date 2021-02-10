@@ -50,6 +50,7 @@
       </div>
     </div>
   </mat-expansion-panel-header>
+  <div class='no-meal-items' *ngIf='!meal.foodItems || !meal.foodItems.length'>No items</div>
   <div class="meal-item" *ngFor="let item of meal.foodItems">
     <div class="meal-item-left">
       <p>{{ item.name }}</p>
