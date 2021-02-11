@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { scan, shareReplay, tap } from 'rxjs/operators';
+import { map, scan, shareReplay, tap } from 'rxjs/operators';
 import { LongFormDate } from '../models/time';
 import { TimeAction, TimeActions } from './time-service-models';
 
@@ -9,25 +9,27 @@ import { TimeAction, TimeActions } from './time-service-models';
   providedIn: 'root',
 })
 export class TimeService {
+  /** Escape hatch for non-observable form. This is a CLONE of the observable */
   private _currentDay: moment.Moment;
   private readonly currentDay: BehaviorSubject<TimeAction> = new BehaviorSubject(
     { type: TimeActions.SetTime, time: moment() }
   );
   private readonly currentDay$: Observable<moment.Moment> = this.currentDay.pipe(
     scan((acc, curr) => this.reducer(acc, curr), moment()),
-    tap((currentDay) => (this._currentDay = currentDay)),
+    tap((currentDay) => (this._currentDay = currentDay.clone())),
     shareReplay(1)
   );
 
   constructor() {}
 
-  /** escape hatch. TODO: should take different approach here */
+  /** Escape hatch to get non-observable copy. TODO: Consider refactor */
   getCurrentDay() {
     return this._currentDay;
   }
 
+  /** Returns clone to avoid accidental mutation */
   getCurrentDay$() {
-    return this.currentDay$;
+    return this.currentDay$.pipe(map((currentDay) => currentDay.clone()));
   }
 
   setCurrentDay(time: moment.Moment) {

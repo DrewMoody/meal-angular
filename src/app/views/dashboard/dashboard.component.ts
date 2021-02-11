@@ -1,14 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MealsService } from '../../shared/meals/meals.service';
 import { TimeService } from 'src/app/shared/time/time.service';
-import { MealDay, MealEntry } from 'src/app/shared/models/meal';
+import { MealDay, MealEntry, MealItem } from 'src/app/shared/models/meal';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import {
-  generateMealDay,
-  generateFoodItem,
-  generateCalorieInformation,
-} from '../../shared/helpers/meal';
+import { generateMealDay } from '../../shared/helpers/meal';
 import { KeyValue } from '@angular/common';
 import { DashTime, DashState } from './shared/models';
 
@@ -69,5 +65,9 @@ export class DashboardComponent implements OnInit {
 
   onChevronRightClick(): void {
     this.timeService.adjustCurrentDay(1);
+  }
+
+  trackMeals(i: number, item: { key: MealEntry; value: MealItem }) {
+    return item.key;
   }
 }

@@ -18,6 +18,8 @@ export enum MealsServiceActions {
   SetMealDay,
   SetMealItem,
   SetFoodItem,
+  UpdateFoodItem,
+  RemoveFoodItem,
 }
 
 export interface MealDayAction {
@@ -34,7 +36,10 @@ export interface MealItemAction {
 }
 
 export interface FoodItemAction {
-  type: MealsServiceActions.SetFoodItem;
+  type:
+    | MealsServiceActions.SetFoodItem
+    | MealsServiceActions.UpdateFoodItem
+    | MealsServiceActions.RemoveFoodItem;
   day: string;
   entry: MealEntry;
   food: FoodItem;

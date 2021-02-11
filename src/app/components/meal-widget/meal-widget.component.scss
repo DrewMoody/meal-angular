@@ -1,6 +1,6 @@
 @use '../../shared/styles/variables';
 
-$side-pad: 12px;
+$side-pad: 16px;
 $macro-indicator-size: 16px;
 $mini-macro-indicator-size: 10px;
 
@@ -122,6 +122,19 @@ $mini-macro-indicator-size: 10px;
     margin-bottom: 2px;
   }
 
+  .meal-item-right {
+    display: flex;
+    align-items: center;
+
+    > *:not(:last-child) {
+      margin-right: 8px;
+    }
+
+    mat-icon {
+      cursor: pointer;
+    }
+  }
+
   .item-nutrition {
     display: flex;
     align-items: center;
@@ -164,5 +177,13 @@ $mini-macro-indicator-size: 10px;
 }
 
 .no-meal-items {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.add-circle-icon {
+  color: #40884c;
+}
+
+.delete-icon {
+  color: #a94a4a;
 }

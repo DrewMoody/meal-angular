@@ -37,12 +37,16 @@ export class AddFoodComponent implements OnInit {
     { value: MealEntry.Snacks, viewValue: 'Snacks' },
   ];
 
+  readonly isAddMode: boolean;
+
   constructor(
     private dialogRef: MatDialogRef<AddFoodComponent, AddFoodResult>,
-    @Optional() @Inject(MAT_DIALOG_DATA) private data: AddFoodData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: AddFoodData,
     private timeService: TimeService,
     private cdRef: ChangeDetectorRef
-  ) {}
+  ) {
+    this.isAddMode = !data?.food;
+  }
 
   ngOnInit() {
     this.initForm();
@@ -50,6 +54,9 @@ export class AddFoodComponent implements OnInit {
 
   async initForm() {
     this.foodForm = await this.createFoodItem();
+    if (this.data?.food) {
+      this.foodForm.patchValue(this.data.food);
+    }
     this.cdRef.markForCheck();
   }
 

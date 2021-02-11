@@ -4,11 +4,10 @@ import { CommonModule } from '@angular/common';
 import { NavigatorComponent } from './navigator/navigator.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AddFoodModule } from '../add-food/add-food.module';
 
 @NgModule({
   declarations: [StdLayoutComponent, NavigatorComponent],
-  imports: [CommonModule, MatIconModule, MatDialogModule, AddFoodModule],
+  imports: [CommonModule, MatIconModule, MatDialogModule],
   providers: [],
   exports: [StdLayoutComponent, NavigatorComponent],
 })

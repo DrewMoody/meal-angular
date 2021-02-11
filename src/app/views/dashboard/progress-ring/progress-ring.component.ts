@@ -58,6 +58,5 @@ export class ProgressRingComponent implements OnInit, OnChanges {
         1
       )
     );
-    console.log(this._progress);
   }
 }

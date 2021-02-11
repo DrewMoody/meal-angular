@@ -53,7 +53,6 @@ export function generateMealDay(): MealDay {
  * Used prior to adding or editing setting a meal to state
  */
 export function calculateMealItem(meal: MealItem): MealItem {
-  console.log(meal);
   return {
     ...meal,
     calorieInformation: meal.foodItems.reduce((acc, curr) => {

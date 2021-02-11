@@ -92,3 +92,8 @@ strong {
 .coming-soon {
   margin: 1rem;
 }
+
+/** For better visual alignment with side padding on dialogs */
+.mat-dialog-actions {
+  padding-bottom: 20px !important;
+}

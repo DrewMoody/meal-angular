@@ -18,7 +18,9 @@
   <div class="meals-container">
     <mpa-meal-widget
       *ngFor="
-        let entry of dashState.meals.meals | keyvalue: keepKeyValueOriginalOrder
+        let entry of dashState.meals.meals
+          | keyvalue: keepKeyValueOriginalOrder;
+        trackBy: trackMeals
       "
       [meal]="entry.value"
       [mealName]="entry.key"

@@ -56,7 +56,6 @@ export class MealsService extends StoreSubject<MealsState, Action> {
   }
 
   protected saveMealsToStorage(meals: { [x: number]: MealDay }): void {
-    console.log(meals);
     localStorage.setItem(MEALS_ID, JSON.stringify(meals));
   }
 
@@ -74,6 +73,14 @@ export class MealsService extends StoreSubject<MealsState, Action> {
 
   setFoodItem(day: string, entry: MealEntry, food: FoodItem): void {
     this.dispatch({ type: Actions.SetFoodItem, day, entry, food });
+  }
+
+  updateFoodItem(day: string, entry: MealEntry, food: FoodItem): void {
+    this.dispatch({ type: Actions.UpdateFoodItem, day, entry, food });
+  }
+
+  removeFoodItem(day: string, entry: MealEntry, food: FoodItem): void {
+    this.dispatch({ type: Actions.RemoveFoodItem, day, entry, food });
   }
 
   /**
@@ -120,6 +127,36 @@ export class MealsService extends StoreSubject<MealsState, Action> {
           [action.day]: calculateMealDay({
             ...mealDay,
             meals: { ...mealDay.meals, [action.entry]: entry },
+          }),
+        };
+        break;
+      case Actions.UpdateFoodItem:
+        const updatedEntry: MealItem = calculateMealItem({
+          ...mealDay.meals[action.entry],
+          foodItems: mealDay.meals[action.entry].foodItems.map((item) =>
+            item.id === action.food.id ? action.food : item
+          ),
+        });
+        updatedMeals = {
+          ...state,
+          [action.day]: calculateMealDay({
+            ...mealDay,
+            meals: { ...mealDay.meals, [action.entry]: updatedEntry },
+          }),
+        };
+        break;
+      case Actions.RemoveFoodItem:
+        const removedEntry: MealItem = calculateMealItem({
+          ...mealDay.meals[action.entry],
+          foodItems: mealDay.meals[action.entry].foodItems.filter(
+            (item) => item.id !== action.food.id
+          ),
+        });
+        updatedMeals = {
+          ...state,
+          [action.day]: calculateMealDay({
+            ...mealDay,
+            meals: { ...mealDay.meals, [action.entry]: removedEntry },
           }),
         };
         break;
